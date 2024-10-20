@@ -38,35 +38,29 @@ app.post('/upload', upload.single('file'), (req, res) => {
         .pipe(csv())
         .on('data', (row) => {
             const { asin, review } = row;
-            // console.log(asin);
-            // console.log(review);
-            res.json({ asin, review });
-            return;
-
+    
             if (!products[asin]) products[asin] = [];
-            products[asin].push(review); // Collect reviews for each product (asin)
+            products[asin].push(review); 
         })
         .on('end', async () => {
             try {
                 const summaries = {};
-                console.log(products); // See grouped reviews by product ASIN
 
-                // Step 2: Send each product's reviews to Gemini for summarization
+                // Send each product's reviews to Gemini for summarization
                 for (const [asin, reviews] of Object.entries(products)) {
                     // Join reviews into a single text block for summarization
                     const reviewsText = reviews.join('\n');
-                    console.log(reviewsText);
-
+            
                     const prompt = `Summarize the following reviews for product ${asin}: ${reviewsText}. Give summary in 4 to 5 lines`;
 
                     // Send prompt to the Gemini API
                     const result = await model.generateContent({ prompt });
 
                     // Store the result as a summary for the current product
-                    summaries[asin] = result.response.text;
+                    summaries[asin] = result.response.text();
                 }
 
-                // Step 3: Send summarized reviews to frontend
+                // Send summarized reviews to frontend
                 res.json({ summaries });
             } catch (error) {
                 console.error('Error generating summary:', error);
