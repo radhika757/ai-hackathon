@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { data } from "../dummyData/dummyData";
 
-import { Button, Input, Select, Space, Table } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import axios from "axios";
+import { Button, Input, Select, Space, Table, Upload } from "antd";
+import { SearchOutlined, UploadOutlined } from "@ant-design/icons";
 
 const columns = [
   {
@@ -48,14 +49,16 @@ const columns = [
 
 const AdminContent = () => {
   const { Option } = Select;
-  const [searchText, setSearchText] = useState("");
   const [filterType, setFilterType] = useState("");
+  const [prompt, setPrompt] = useState("");
+  const [response, setResponse] = useState("");
+  //   const [uploading, setUploading] = useState(false);
 
   const filteredData = data.filter((item) =>
     Object.values(item).some(
       (val) =>
         typeof val === "string" &&
-        val.toLowerCase().includes(searchText.toLowerCase())
+        val.toLowerCase().includes(prompt.toLowerCase())
     )
   );
 
@@ -67,12 +70,41 @@ const AdminContent = () => {
     return 0;
   });
 
-  const handleSearch = (value) => {
-    setSearchText(value);
-  };
-
   const handleFilter = (value) => {
     setFilterType(value);
+  };
+
+  const handleSearch = async (value) => {
+    setPrompt(value);
+    try {
+      const result = await axios.post("http://localhost:3000/generate", {
+        prompt: value,
+      });
+      setResponse(result.data.response);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error:", error);
+      setResponse("Error generating response.");
+    }
+  };
+
+  const handleUpload = async ({file}) => {
+    // setUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/upload",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
   };
 
   return (
@@ -95,7 +127,22 @@ const AdminContent = () => {
           <Option value="lowestRated">Lowest Rated</Option>
         </Select>
       </Space>
-      <Table columns={columns} dataSource={sortedData} />
+      {response ? (
+        <Table columns={columns} dataSource={sortedData} />
+      ) : (
+        <div
+          style={{
+            border: "2px dashed #d9d9d9",
+            borderRadius: "8px",
+            padding: "40px",
+            textAlign: "center",
+          }}
+        >
+          <Upload customRequest={handleUpload} showUploadList={false}>
+            <Button icon={<UploadOutlined />}>Select File</Button>
+          </Upload>
+        </div>
+      )}
     </div>
   );
 };

@@ -4,7 +4,6 @@ import "./App.css";
 
 import {  Tabs } from "antd";
 
-
 function App() {
   const { TabPane } = Tabs;
 
