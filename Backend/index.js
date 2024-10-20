@@ -38,9 +38,9 @@ app.post('/upload', upload.single('file'), (req, res) => {
         .pipe(csv())
         .on('data', (row) => {
             const { asin, review } = row;
-    
+
             if (!products[asin]) products[asin] = [];
-            products[asin].push(review); 
+            products[asin].push(review);
         })
         .on('end', async () => {
             try {
@@ -50,11 +50,11 @@ app.post('/upload', upload.single('file'), (req, res) => {
                 for (const [asin, reviews] of Object.entries(products)) {
                     // Join reviews into a single text block for summarization
                     const reviewsText = reviews.join('\n');
-            
+
                     const prompt = `Summarize the following reviews for product ${asin}: ${reviewsText}. Give summary in 4 to 5 lines`;
 
                     // Send prompt to the Gemini API
-                    const result = await model.generateContent({ prompt });
+                    const result = await model.generateContent(prompt);
 
                     // Store the result as a summary for the current product
                     summaries[asin] = result.response.text();
