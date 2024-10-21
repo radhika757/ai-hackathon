@@ -17,7 +17,7 @@ const AdminContent = () => {
 
   const handleSearch = async (value) => {
     try {
-      const result = await axios.post("http://localhost:3000/generate", {
+      const result = await axios.post("http://localhost:3000/api/generate", {
         prompt: value,
       });
 
@@ -35,7 +35,7 @@ const AdminContent = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/upload",
+        "http://localhost:3000/api/upload",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -72,7 +72,7 @@ const AdminContent = () => {
         prompt = `Explain in 2-3 lines on how I can make sell more of my already highest selling proudct (ASIN: ${itemCode}) summary: "${summary}" and a rating of ${rating}?`;
       }
 
-      const response = await axios.post("http://localhost:3000/suggestions", {
+      const response = await axios.post("http://localhost:3000/api/suggestions", {
         prompt,
       });
 
@@ -115,7 +115,7 @@ const AdminContent = () => {
       key: "summary",
     },
     {
-      title: "Action",
+      title: "Focus Areas",
       key: "action",
       render: (record) => {
         // Check if there is a suggestion for the current product (itemCode)
