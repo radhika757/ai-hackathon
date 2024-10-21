@@ -1,6 +1,7 @@
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const express = require('express');
+const bodyParser = require("body-parser");
 require('dotenv').config();
 const multer = require('multer');
 const csv = require('csv-parser');
@@ -8,6 +9,7 @@ const fs = require('fs');
 const cors = require('cors');
 
 const app = express();
+app.use(bodyParser.json());
 app.use(
     cors({
         origin: "http://localhost:5173"
@@ -78,3 +80,17 @@ app.post('/upload', upload.single('file'), (req, res) => {
             }
         });
 });
+
+
+// Generate suggestions based on reviews and rating.
+app.post('/suggestions', async (req, res) => {
+    const { prompt } = req.body;
+  
+    try {
+      const result = await model.generateContent(prompt);
+      res.json({ suggestions: result.response.text() });
+    } catch (error) {
+      console.error("Error generating suggestions:", error);
+      res.status(500).json({ error: "Failed to generate suggestions." });
+    }
+  });
