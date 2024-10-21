@@ -14,7 +14,7 @@ app.use(
     })
 );
 
-const upload = multer({ dest: 'uploads/' }); // Save uploaded files in 'uploads' directory
+const upload = multer({ dest: 'uploads/' });
 const PORT = 3000;
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
@@ -49,30 +49,29 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
             // collect reviews & ratings
             products[asin].reviews.push(review);
-            products[asin].ratings.push(parseFloat(rating));
+            products[asin].ratings.push(Number(rating));
         })
         .on('end', async () => {
             try {
-                const summaries = {};
-                const averageRatings = {};
-
+                const finalData = [];
+                
                 // Send each product's reviews to Gemini for summarization
-                for (const [asin, { name, reviews, ratings }] of Object.entries(products)) {
-                    // Join reviews into a single text block for summarization
-                    const reviewsText = reviews.join('\n');
-
+                for (const [asin, productData] of Object.entries(products)) {
+                    const reviewsText = productData.reviews.join('\n');
                     const prompt = `Summarize the following reviews for product ${asin}: ${reviewsText}. Give summary in 4 to 5 lines`;
 
                     const result = await model.generateContent(prompt);
-                    summaries[asin] = { name: name, summary: result.response.text() };
-
-                    // Calculate average rating
-                    const averageRating = ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;
-                    averageRatings[asin] = averageRating;
+                    const averageRating = productData.ratings.reduce((a, b) => a + b, 0) / productData.ratings.length;
+                  
+                    finalData.push({
+                        itemCode: asin,
+                        name: productData.name,
+                        averageRating: averageRating.toFixed(1),
+                        summary: result.response.text()
+                    });
                 }
-               
-                // Send summarized reviews to frontend
-                res.json({ summaries, averageRatings });
+
+                res.json(finalData);
             } catch (error) {
                 console.error('Error generating summary:', error);
                 res.status(500).send('Error summarizing reviews.');

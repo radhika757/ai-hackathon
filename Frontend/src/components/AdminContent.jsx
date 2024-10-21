@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { data } from "../dummyData/dummyData";
 
 import axios from "axios";
 import { Button, Input, Select, Space, Spin, Table, Upload } from "antd";
@@ -19,26 +18,19 @@ const columns = [
   },
   {
     title: "Product Name",
-    dataIndex: "productName",
-    key: "productName",
+    dataIndex: "name",
+    key: "name",
   },
   {
-    title: "Manufacturing Date",
-    dataIndex: "manufacturingDate",
-    key: "manufacturingDate",
-    sorter: (a, b) =>
-      new Date(a.manufacturingDate) - new Date(b.manufacturingDate),
-  },
-  {
-    title: "Rating",
-    dataIndex: "rating",
-    key: "rating",
+    title: "Average Rating",
+    dataIndex: "averageRating",
+    key: "averageRating",
     sorter: (a, b) => a.rating - b.rating,
   },
   {
-    title: "Review",
-    dataIndex: "review",
-    key: "review",
+    title: "Review Summary",
+    dataIndex: "summary",
+    key: "summary",
   },
   {
     title: "Action",
@@ -49,33 +41,18 @@ const columns = [
 
 const AdminContent = () => {
   const { Option } = Select;
-  const [filterType, setFilterType] = useState("");
-  const [prompt, setPrompt] = useState("");
+    const [filterType, setFilterType] = useState("highestRated");
+  //   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [uploading, setUploading] = useState(false);
 
-  const filteredData = data.filter((item) =>
-    Object.values(item).some(
-      (val) =>
-        typeof val === "string" &&
-        val.toLowerCase().includes(prompt.toLowerCase())
-    )
-  );
 
-  const sortedData = [...filteredData].sort((a, b) => {
-    if (filterType === "mostSold") return b.number - a.number;
-    if (filterType === "leastSold") return a.number - b.number;
-    if (filterType === "highestRated") return b.rating - a.rating;
-    if (filterType === "lowestRated") return a.rating - b.rating;
-    return 0;
-  });
-
-  const handleFilter = (value) => {
-    setFilterType(value);
-  };
+    const handleFilter = (value) => {
+      setFilterType(value);
+    };
 
   const handleSearch = async (value) => {
-    setPrompt(value);
+    // setPrompt(value);
     try {
       const result = await axios.post("http://localhost:3000/generate", {
         prompt: value,
@@ -101,14 +78,28 @@ const AdminContent = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      console.log("Response:", response.data);
       setResponse(response.data);
-      setUploading(false)
+      setUploading(false);
     } catch (error) {
       console.error("Error uploading file:", error);
+      setUploading(false)
     }
   };
 
+  const tableData = Array.isArray(response) 
+  ? response.map((item, index) => ({
+      ...item,
+      number: index + 1,
+      key: index,
+    }))
+  : [];
+
+  const sortedData = [...tableData].sort((a, b) => {
+    if (filterType === "highestRated") return b.averageRating - a.averageRating;
+    if (filterType === "lowestRated") return a.averageRating - b.averageRating;
+    return 0;
+  });
+  
   return (
     <div>
       <Space style={{ marginBottom: 16 }}>
@@ -122,11 +113,9 @@ const AdminContent = () => {
         <Select
           style={{ width: 200 }}
           placeholder="Filter"
-          onChange={handleFilter}
+            onChange={handleFilter}
           disabled={!response}
         >
-          <Option value="mostSold">Most Sold</Option>
-          <Option value="leastSold">Least Sold</Option>
           <Option value="highestRated">Highest Rated</Option>
           <Option value="lowestRated">Lowest Rated</Option>
         </Select>
