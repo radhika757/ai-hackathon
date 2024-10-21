@@ -37,31 +37,42 @@ app.post('/upload', upload.single('file'), (req, res) => {
     fs.createReadStream(filePath)
         .pipe(csv())
         .on('data', (row) => {
-            const { asin, review } = row;
+            const { asin, review, rating, name } = row;
 
-            if (!products[asin]) products[asin] = [];
-            products[asin].push(review);
+            if (!products[asin]) {
+                products[asin] = {
+                    name: name,
+                    reviews: [],
+                    ratings: []
+                };
+            }
+
+            // collect reviews & ratings
+            products[asin].reviews.push(review);
+            products[asin].ratings.push(parseFloat(rating));
         })
         .on('end', async () => {
             try {
                 const summaries = {};
+                const averageRatings = {};
 
                 // Send each product's reviews to Gemini for summarization
-                for (const [asin, reviews] of Object.entries(products)) {
+                for (const [asin, { name, reviews, ratings }] of Object.entries(products)) {
                     // Join reviews into a single text block for summarization
                     const reviewsText = reviews.join('\n');
 
                     const prompt = `Summarize the following reviews for product ${asin}: ${reviewsText}. Give summary in 4 to 5 lines`;
 
-                    // Send prompt to the Gemini API
                     const result = await model.generateContent(prompt);
+                    summaries[asin] = { name: name, summary: result.response.text() };
 
-                    // Store the result as a summary for the current product
-                    summaries[asin] = result.response.text();
+                    // Calculate average rating
+                    const averageRating = ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length;
+                    averageRatings[asin] = averageRating;
                 }
-
+               
                 // Send summarized reviews to frontend
-                res.json({ summaries });
+                res.json({ summaries, averageRatings });
             } catch (error) {
                 console.error('Error generating summary:', error);
                 res.status(500).send('Error summarizing reviews.');

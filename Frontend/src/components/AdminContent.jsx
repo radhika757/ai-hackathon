@@ -2,7 +2,7 @@ import { useState } from "react";
 import { data } from "../dummyData/dummyData";
 
 import axios from "axios";
-import { Button, Input, Select, Space, Table, Upload } from "antd";
+import { Button, Input, Select, Space, Spin, Table, Upload } from "antd";
 import { SearchOutlined, UploadOutlined } from "@ant-design/icons";
 
 const columns = [
@@ -52,7 +52,7 @@ const AdminContent = () => {
   const [filterType, setFilterType] = useState("");
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
-  //   const [uploading, setUploading] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const filteredData = data.filter((item) =>
     Object.values(item).some(
@@ -80,16 +80,16 @@ const AdminContent = () => {
       const result = await axios.post("http://localhost:3000/generate", {
         prompt: value,
       });
-      setResponse(result.data.response);
-      console.log(response.data);
+
+      console.log(result.data);
     } catch (error) {
       console.error("Error:", error);
       setResponse("Error generating response.");
     }
   };
 
-  const handleUpload = async ({file}) => {
-    // setUploading(true);
+  const handleUpload = async ({ file }) => {
+    setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
 
@@ -102,6 +102,8 @@ const AdminContent = () => {
         }
       );
       console.log("Response:", response.data);
+      setResponse(response.data);
+      setUploading(false)
     } catch (error) {
       console.error("Error uploading file:", error);
     }
@@ -115,11 +117,13 @@ const AdminContent = () => {
           onChange={(e) => handleSearch(e.target.value)}
           style={{ width: 200 }}
           prefix={<SearchOutlined />}
+          disabled={!response}
         />
         <Select
           style={{ width: 200 }}
           placeholder="Filter"
           onChange={handleFilter}
+          disabled={!response}
         >
           <Option value="mostSold">Most Sold</Option>
           <Option value="leastSold">Least Sold</Option>
@@ -127,7 +131,12 @@ const AdminContent = () => {
           <Option value="lowestRated">Lowest Rated</Option>
         </Select>
       </Space>
-      {response ? (
+
+      {uploading ? (
+        <Space>
+          <Spin />
+        </Space>
+      ) : response ? (
         <Table columns={columns} dataSource={sortedData} />
       ) : (
         <div
