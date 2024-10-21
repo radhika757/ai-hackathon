@@ -45,3 +45,48 @@ export const data = [
         review: 'Good for entertainment, could use more processing power',
     },
 ];
+
+export const products = [
+    {
+      id: 1,
+      name: "Wireless Noise-Cancelling Headphones",
+      rating: 4,
+      description: "Experience crystal-clear audio with our premium wireless noise-cancelling headphones.",
+      image: "/placeholder.svg?height=300&width=400"
+    },
+    {
+      id: 2,
+      name: "Smart Fitness Tracker",
+      rating: 4.5,
+      description: "Track your health and fitness goals with our advanced smart fitness tracker.",
+      image: "/placeholder.svg?height=300&width=400"
+    },
+    {
+      id: 3,
+      name: "4K Ultra HD Smart TV",
+      rating: 5,
+      description: "Immerse yourself in stunning 4K quality with our latest smart TV.",
+      image: "/placeholder.svg?height=300&width=400"
+    },
+    {
+      id: 4,
+      name: "Portable Bluetooth Speaker",
+      rating: 3.5,
+      description: "Take your music anywhere with our compact and powerful Bluetooth speaker.",
+      image: "/placeholder.svg?height=300&width=400"
+    },
+    {
+      id: 5,
+      name: "Professional DSLR Camera",
+      rating: 4.8,
+      description: "Capture life's moments in extraordinary detail with our professional DSLR camera.",
+      image: "/placeholder.svg?height=300&width=400"
+    },
+    {
+      id: 6,
+      name: "Ergonomic Office Chair",
+      rating: 4.2,
+      description: "Work in comfort with our ergonomically designed office chair.",
+      image: "/placeholder.svg?height=300&width=400"
+    }
+  ];
