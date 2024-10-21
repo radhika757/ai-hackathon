@@ -43,7 +43,7 @@ router.post('/upload', upload.single('file'), (req, res) => {
                 // Send each product's reviews to Gemini for summarization
                 for (const [asin, productData] of Object.entries(products)) {
                     const reviewsText = productData.reviews.join('\n');
-                    const prompt = `Summarize the following reviews for product ${asin}: ${reviewsText}. Give summary in 4 to 5 lines`;
+                    const prompt = `Summarize the following reviews for product ${asin}: ${reviewsText}. Give two points, 1st is what people loved the most and 2nd is what people hated the most. The header should just be what they loved the most and what they hated the most. don't include any special characters`;
 
                     const result = await model.generateContent(prompt);
                     const averageRating = productData.ratings.reduce((a, b) => a + b, 0) / productData.ratings.length;

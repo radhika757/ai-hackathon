@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import axios from "axios";
-import { Button, Input, Select, Space, Spin, Table, Upload } from "antd";
-import { SearchOutlined, UploadOutlined } from "@ant-design/icons";
+import { Button, Select, Space, Spin, Table, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
 const AdminContent = () => {
   const { Option } = Select;
@@ -10,22 +10,10 @@ const AdminContent = () => {
   const [suggestions, setSuggestions] = useState("");
   const [response, setResponse] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const handleFilter = (value) => {
     setFilterType(value);
-  };
-
-  const handleSearch = async (value) => {
-    try {
-      const result = await axios.post("http://localhost:3000/api/generate", {
-        prompt: value,
-      });
-
-      console.log(result.data);
-    } catch (error) {
-      console.error("Error:", error);
-      setResponse("Error generating response.");
-    }
   };
 
   const handleUpload = async ({ file }) => {
@@ -64,18 +52,22 @@ const AdminContent = () => {
   });
 
   const handleSuggestions = async (itemCode, summary, rating) => {
+    setLoader(true);
     let prompt = "";
     try {
       if (rating < 4) {
-        prompt = `Explain in 2-3 lines on how can the following product (ASIN: ${itemCode}) be improved based on this summary: "${summary}" and a rating of ${rating}?`;
+        prompt = `Explain in 2-3 points on how can the following product (ASIN: ${itemCode}) be improved based on this summary: "${summary}" and a rating of ${rating}? Add the points in new line`;
       } else {
-        prompt = `Explain in 2-3 lines on how I can make sell more of my already highest selling proudct (ASIN: ${itemCode}) summary: "${summary}" and a rating of ${rating}?`;
+        prompt = `Explain in 2-3 points on how I can make sell more of my already highest selling proudct (ASIN: ${itemCode}) summary: "${summary}" and a rating of ${rating}? Add the points in new line`;
       }
 
-      const response = await axios.post("http://localhost:3000/api/suggestions", {
-        prompt,
-      });
-
+      const response = await axios.post(
+        "http://localhost:3000/api/suggestions",
+        {
+          prompt,
+        }
+      );
+      setLoader(false);
       const newSuggestion = response.data.suggestions;
       setSuggestions((prevSuggestions) => ({
         ...prevSuggestions,
@@ -83,6 +75,7 @@ const AdminContent = () => {
       }));
     } catch (error) {
       console.error("Error fetching suggestions:", error);
+      setLoader(false);
     }
   };
 
@@ -133,6 +126,7 @@ const AdminContent = () => {
                 record.averageRating
               )
             }
+            disabled={loader}
           >
             Suggestions
           </Button>
@@ -144,13 +138,6 @@ const AdminContent = () => {
   return (
     <div>
       <Space style={{ marginBottom: 16 }}>
-        <Input
-          placeholder="Search"
-          onChange={(e) => handleSearch(e.target.value)}
-          style={{ width: 200 }}
-          prefix={<SearchOutlined />}
-          disabled={!response}
-        />
         <Select
           style={{ width: 200 }}
           placeholder="Filter"
@@ -163,9 +150,16 @@ const AdminContent = () => {
       </Space>
 
       {uploading ? (
-        <Space>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
           <Spin />
-        </Space>
+        </div>
       ) : response ? (
         <Table columns={columns} dataSource={sortedData} />
       ) : (
