@@ -4,11 +4,12 @@ import axios from "axios";
 import { Button, Select, Space, Spin, Table, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
-const AdminContent = () => {
+const AdminContent = ({ response, setResponse }) => {
+  console.log(response);
+
   const { Option } = Select;
   const [filterType, setFilterType] = useState("");
   const [suggestions, setSuggestions] = useState("");
-  const [response, setResponse] = useState("");
   const [uploading, setUploading] = useState(false);
   const [loader, setLoader] = useState(false);
 

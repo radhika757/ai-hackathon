@@ -49,44 +49,44 @@ export const data = [
 export const products = [
     {
       id: 1,
-      name: "Wireless Noise-Cancelling Headphones",
-      rating: 4,
-      description: "Experience crystal-clear audio with our premium wireless noise-cancelling headphones.",
+      name: "Mamaearth-Natural-Turmeric-Saffron-brightning",
+      rating: 5,
+      description: "Mamaearth ubTAN Natural Face Wash is one the best product of Mama Earthand it Suits to every skin types, it helps in removing all signs of tan. Liquorice helps repair the sun damage caused by exposure to the harsh rays of the sun.",
       image: "/placeholder.svg?height=300&width=400"
     },
     {
       id: 2,
-      name: "Smart Fitness Tracker",
-      rating: 4.5,
-      description: "Track your health and fitness goals with our advanced smart fitness tracker.",
+      name: "Mamaearth-Face-Wash-100-ml",
+      rating: 5,
+      description: "Mamaearth products are made of 100% natural ingredients which contain mulberry extract and vitamin C.MulBerry extract is used to treat hyperpigmentation and vitamin C heals in sun damage and repairs damaged skin cells.It suits all skin types",
       image: "/placeholder.svg?height=300&width=400"
     },
     {
       id: 3,
-      name: "4K Ultra HD Smart TV",
-      rating: 5,
-      description: "Immerse yourself in stunning 4K quality with our latest smart TV.",
+      name: "Mamaearth-Moisturizing-Baby-Bathing-Oatmeal",
+      rating: 4,
+      description: "A gentle cleansing soap that doesn't dry out skin and leaves a lingering baby fragrance after use.",
       image: "/placeholder.svg?height=300&width=400"
     },
     {
       id: 4,
-      name: "Portable Bluetooth Speaker",
+      name: "Godrej-No-1-Bathing-Soap-Turmeric",
       rating: 3.5,
-      description: "Take your music anywhere with our compact and powerful Bluetooth speaker.",
+      description: "Good soap with nice fragrance.",
       image: "/placeholder.svg?height=300&width=400"
     },
     {
       id: 5,
-      name: "Professional DSLR Camera",
+      name: "Godrej-aer-Pocket-Bathroom-Fragrance",
       rating: 4.8,
-      description: "Capture life's moments in extraordinary detail with our professional DSLR camera.",
+      description: "Godrej-aer-Pocket-Bathroom-Fragrance",
       image: "/placeholder.svg?height=300&width=400"
     },
     {
       id: 6,
-      name: "Ergonomic Office Chair",
-      rating: 4.2,
-      description: "Work in comfort with our ergonomically designed office chair.",
+      name: "Godrej-Matic-Spray-Violet-Valley",
+      rating: 2,
+      description: "Highly dissatisfied with the product.",
       image: "/placeholder.svg?height=300&width=400"
     }
   ];
