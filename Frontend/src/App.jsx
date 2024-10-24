@@ -11,7 +11,7 @@ function App() {
   const [response, setResponse] = useState("");
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="container">
       <Tabs defaultActiveKey="admin">
         <TabPane tab="Admin" key="admin">
           <AdminContent response={response} setResponse={setResponse} />

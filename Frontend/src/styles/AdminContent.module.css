@@ -2,6 +2,10 @@
     margin-bottom: 26px;
 }
 
+.select{
+    width: 200px;
+}
+
 .spinner{
     display: flex;
     justify-content: center;

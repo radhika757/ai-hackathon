@@ -140,7 +140,7 @@ const AdminContent = ({ response, setResponse }) => {
     <div>
       <Space className={styles.filter}>
         <Select
-          style={{ width: 200 }}
+          className={styles.select}
           placeholder="Filter"
           onChange={handleFilter}
           disabled={!response}
