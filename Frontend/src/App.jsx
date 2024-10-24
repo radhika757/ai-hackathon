@@ -26,7 +26,7 @@ function App() {
           <UserContent />
         </TabPane>
       </Tabs>
-      {response && (
+      {selectedProduct && (
         <Dashboard
           selectedProduct={selectedProduct}
           setSelectedProduct={setSelectedProduct}
