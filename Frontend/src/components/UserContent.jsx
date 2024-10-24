@@ -1,7 +1,11 @@
 /* eslint-disable react/prop-types */
-
-import { Card, Rate, Typography, Image, Row, Col } from 'antd';
 import { products } from '../dummyData/dummyData';
+import styles from '../styles/UserContent.module.css';
+
+import { Card, Typography, Image, Row, Col } from 'antd';
+
+
+
 
 const { Title, Paragraph } = Typography;
 
@@ -17,11 +21,11 @@ const ProductCard = ({ product }) => (
     }
   >
     <Title level={4}>{product.name}</Title>
-    <div style={{ display: 'flex', alignItems: 'center', marginBottom: 16 }}>
-      <Rate disabled allowHalf defaultValue={product.rating} />
-      <span style={{ marginLeft: 8, color: 'rgba(0, 0, 0, 0.45)' }}>{product.rating} out of 5</span>
+    <div className={styles.ratingContainer}>
+      <span className={styles.ratings}>People have rated it {product.rating} out of 5</span>
     </div>
-    <Paragraph ellipsis={{ rows: 3, expandable: true, symbol: 'more' }}>
+    <Title level={5}>Customers say -</Title>
+    <Paragraph ellipsis={{ rows: 2, expandable: true, symbol: 'more' }}>
       {product.description}
     </Paragraph>
   </Card>
@@ -29,8 +33,8 @@ const ProductCard = ({ product }) => (
 
 export default function ProductGrid() {
   return (
-    <div style={{ padding: '24px' }}>
-      <Title level={2} style={{ marginBottom: '24px' }}>Featured Products</Title>
+    <div className={styles.productGrid}>
+      <Title level={2}className={styles.title}>Featured Products</Title>
       <Row gutter={[16, 16]}>
         {products.map(product => (
           <Col xs={24} sm={12} md={8} lg={6} key={product.id}>

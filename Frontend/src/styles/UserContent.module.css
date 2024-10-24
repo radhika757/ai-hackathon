@@ -1,0 +1,17 @@
+.ratingContainer{
+    display: flex;
+    align-items: center;
+}
+
+.ratings{
+    margin-left: 10px;
+    color: rgba(0, 0, 0, 0.45);
+}
+
+.productGrid{
+    padding: 24px;
+}
+
+.title{
+    margin-bottom: 24px;
+}

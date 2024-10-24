@@ -1,51 +1,4 @@
-export const data = [
-    {
-        key: '1',
-        number: 1,
-        itemCode: 'A001',
-        productName: 'Laptop',
-        manufacturingDate: '2023-01-15',
-        rating: 4.5,
-        review: 'Great product, very fast',
-    },
-    {
-        key: '2',
-        number: 2,
-        itemCode: 'B002',
-        productName: 'Smartphone',
-        manufacturingDate: '2023-02-20',
-        rating: 4.2,
-        review: 'Good camera, battery life could be better',
-    },
-    {
-        key: '3',
-        number: 3,
-        itemCode: 'C003',
-        productName: 'Headphones',
-        manufacturingDate: '2023-03-10',
-        rating: 4.8,
-        review: 'Excellent sound quality',
-    },
-    {
-        key: '4',
-        number: 4,
-        itemCode: 'D004',
-        productName: 'Smartwatch',
-        manufacturingDate: '2023-04-05',
-        rating: 3.9,
-        review: 'Decent features, but battery drains quickly',
-    },
-    {
-        key: '5',
-        number: 5,
-        itemCode: 'E005',
-        productName: 'Tablet',
-        manufacturingDate: '2023-05-12',
-        rating: 4.1,
-        review: 'Good for entertainment, could use more processing power',
-    },
-];
-
+// Data from dataset
 export const products = [
     {
       id: 1,
@@ -65,28 +18,28 @@ export const products = [
       id: 3,
       name: "Mamaearth-Moisturizing-Baby-Bathing-Oatmeal",
       rating: 4,
-      description: "A gentle cleansing soap that doesn't dry out skin and leaves a lingering baby fragrance after use.",
+      description: "A gentle cleansing soap that doesn't dry out skin and leaves a lingering baby fragrance after use.Must buy for dry skin tone",
       image: "/placeholder.svg?height=300&width=400"
     },
     {
       id: 4,
       name: "Godrej-No-1-Bathing-Soap-Turmeric",
-      rating: 3.5,
-      description: "Good soap with nice fragrance.",
+      rating: 2.5,
+      description: "Delivery was very late and the product was damaged as well. Couldn't exchange the product",
       image: "/placeholder.svg?height=300&width=400"
     },
     {
       id: 5,
       name: "Godrej-aer-Pocket-Bathroom-Fragrance",
       rating: 4.8,
-      description: "Godrej-aer-Pocket-Bathroom-Fragrance",
+      description: "Very good product, long lasting. The packaging was beautiful and the product is affordable as well.",
       image: "/placeholder.svg?height=300&width=400"
     },
     {
       id: 6,
       name: "Godrej-Matic-Spray-Violet-Valley",
       rating: 2,
-      description: "Highly dissatisfied with the product.",
+      description: "Highly dissatisfied with the product.It was damaged and they didn't allow exchnaging the damaged product as well.",
       image: "/placeholder.svg?height=300&width=400"
     }
   ];

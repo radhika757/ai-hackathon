@@ -1,12 +1,12 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
+import styles from '../styles/AdminContent.module.css';
 
 import axios from "axios";
 import { Button, Select, Space, Spin, Table, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
 const AdminContent = ({ response, setResponse }) => {
-  console.log(response);
-
   const { Option } = Select;
   const [filterType, setFilterType] = useState("");
   const [suggestions, setSuggestions] = useState("");
@@ -138,7 +138,7 @@ const AdminContent = ({ response, setResponse }) => {
 
   return (
     <div>
-      <Space style={{ marginBottom: 16 }}>
+      <Space className={styles.filter}>
         <Select
           style={{ width: 200 }}
           placeholder="Filter"
@@ -152,12 +152,7 @@ const AdminContent = ({ response, setResponse }) => {
 
       {uploading ? (
         <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
+         className={styles.spinner}
         >
           <Spin />
         </div>
@@ -165,12 +160,7 @@ const AdminContent = ({ response, setResponse }) => {
         <Table columns={columns} dataSource={sortedData} />
       ) : (
         <div
-          style={{
-            border: "2px dashed #d9d9d9",
-            borderRadius: "8px",
-            padding: "40px",
-            textAlign: "center",
-          }}
+         className={styles.upload}
         >
           <Upload customRequest={handleUpload} showUploadList={false}>
             <Button icon={<UploadOutlined />}>Select File</Button>
