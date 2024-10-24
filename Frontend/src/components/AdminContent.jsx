@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import styles from '../styles/AdminContent.module.css';
+import styles from "../styles/AdminContent.module.css";
 
 import axios from "axios";
 import { Button, Select, Space, Spin, Table, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
-const AdminContent = ({ response, setResponse }) => {
+const AdminContent = ({ response, setResponse, setSelectedProduct }) => {
   const { Option } = Select;
   const [filterType, setFilterType] = useState("");
   const [suggestions, setSuggestions] = useState("");
@@ -24,7 +24,7 @@ const AdminContent = ({ response, setResponse }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/upload",
+        "http://localhost:8000/api/upload",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -63,7 +63,7 @@ const AdminContent = ({ response, setResponse }) => {
       }
 
       const response = await axios.post(
-        "http://localhost:3000/api/suggestions",
+        "http://localhost:8000/api/suggestions",
         {
           prompt,
         }
@@ -80,6 +80,10 @@ const AdminContent = ({ response, setResponse }) => {
     }
   };
 
+  const handleProductSelection = (data) => {
+    setSelectedProduct(data);
+  };
+
   const columns = [
     {
       title: "Number",
@@ -94,8 +98,10 @@ const AdminContent = ({ response, setResponse }) => {
     },
     {
       title: "Product Name",
-      dataIndex: "name",
       key: "name",
+      render: (data) => {
+       return <div className={styles.productName} onClick={() => handleProductSelection(data)}>{data.name}</div>;
+      },
     },
     {
       title: "Average Rating",
@@ -151,17 +157,13 @@ const AdminContent = ({ response, setResponse }) => {
       </Space>
 
       {uploading ? (
-        <div
-         className={styles.spinner}
-        >
+        <div className={styles.spinner}>
           <Spin />
         </div>
       ) : response ? (
         <Table columns={columns} dataSource={sortedData} />
       ) : (
-        <div
-         className={styles.upload}
-        >
+        <div className={styles.upload}>
           <Upload customRequest={handleUpload} showUploadList={false}>
             <Button icon={<UploadOutlined />}>Select File</Button>
           </Upload>

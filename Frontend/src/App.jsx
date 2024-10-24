@@ -9,18 +9,29 @@ import { Tabs } from "antd";
 function App() {
   const { TabPane } = Tabs;
   const [response, setResponse] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   return (
     <div className="container">
       <Tabs defaultActiveKey="admin">
         <TabPane tab="Admin" key="admin">
-          <AdminContent response={response} setResponse={setResponse} />
+          <AdminContent
+            response={response}
+            setResponse={setResponse}
+            selectedProduct={selectedProduct}
+            setSelectedProduct={setSelectedProduct}
+          />
         </TabPane>
         <TabPane tab="User" key="user">
           <UserContent />
         </TabPane>
       </Tabs>
-      {response && <Dashboard />}
+      {response && (
+        <Dashboard
+          selectedProduct={selectedProduct}
+          setSelectedProduct={setSelectedProduct}
+        />
+      )}
     </div>
   );
 }

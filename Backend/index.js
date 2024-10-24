@@ -15,6 +15,6 @@ app.use(
 const uploadRoutes = require('./upload'); 
 app.use('/api', uploadRoutes);
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 8000, () => {
     console.log(`server is running on ${process.env.PORT}`);
 });

@@ -19,3 +19,8 @@
     padding: 40px;
     text-align: center;
 }
+
+.productName:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
